@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">CRUX 2</string>
+    <string name="your_password">your password</string>
+    <string name="login">Login</string>
+    <string name="your_email">Your Email</string>
+    <string name="create_a_new_account">Create a new account</string>
+    <string name="last_name">Last Name</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already Have Account</string>
+    <string name="need_a_account">Need A Account ?</string>
+
+</resources>
