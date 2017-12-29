@@ -2,6 +2,7 @@ package com.shuvojit.crux.view.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -39,6 +40,7 @@ import com.shuvojit.crux.model.addPost_model;
 import com.shuvojit.crux.model.rec_model.user_post_model;
 
 import com.shuvojit.crux.service.Api;
+import com.shuvojit.crux.view.User_Post_Details_activity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -58,6 +60,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -165,7 +168,7 @@ public class Profile_Post_Frag extends Fragment {
                             final String download_url = task.getResult().getDownloadUrl().toString();
                             AddNewPostToServer(title,Description,download_url);
 
-                            mDialog.setTitle("Registering User");
+                            mDialog.setTitle("Add New Post");
                             mDialog.setMessage("Please wait while we push your post to server !");
                             mDialog.setCanceledOnTouchOutside(false);
                             mDialog.show();
@@ -285,7 +288,7 @@ public class Profile_Post_Frag extends Fragment {
         recyclerView = v.findViewById(R.id.user_post_rec);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
-        recyclerView.addItemDecoration(new ItemDecoration(0,0,0,10));
+        recyclerView.addItemDecoration(new ItemDecoration(20,10,20,0));
         adapter= new RecyclerAdapter(list);
         recyclerView.setAdapter(adapter);
         mAddPost = v.findViewById(R.id.user_add_post);
@@ -310,6 +313,35 @@ public class Profile_Post_Frag extends Fragment {
         public void onBindViewHolder(RecHolder holder, int position) {
             View v = holder.itemView;
             v.setTag(position);
+            v.setOnClickListener(view->{
+                startActivity(new Intent(getContext(),
+                        User_Post_Details_activity.class)
+                        .putExtra("user_object",result.get(position)));
+            });
+            v.setOnLongClickListener(view ->{
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Delete a post");
+                alertDialog.setMessage("Are you sure you want to delete this post");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                mDialog.setTitle("Deleting User");
+                                mDialog.setMessage("Please wait while we delete your post from server !");
+                                mDialog.setCanceledOnTouchOutside(false);
+                                mDialog.show();
+                                DeletePost(result.get(position).getId());
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.show();
+                return false;
+            });
             holder.bindData(result.get(position));
         }
 
@@ -317,8 +349,6 @@ public class Profile_Post_Frag extends Fragment {
         public int getItemCount() {
             return result.size();
         }
-
-
 
         public class RecHolder extends RecyclerView.ViewHolder {
              private ImageView postimg;
@@ -350,32 +380,42 @@ public class Profile_Post_Frag extends Fragment {
             }
         }
     }
+
+    private void DeletePost(String id) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //Ok Http intercepter
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request req = chain.request();
+                Request.Builder newreq = req.newBuilder().header("auth", token);
+                return chain.proceed(newreq.build());
+            }
+        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://young-peak-53218.herokuapp.com/")
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api authservice = retrofit.create(Api.class);
+        Call <Void>call = authservice.deleteUser(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call <Void>call, retrofit2.Response<Void> response) {
+                if(response.isSuccessful()){
+                    if(response.code()==200){
+                        list.clear();
+                        GetUserPostFrmServer(token);
+                    }
+                }else {
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

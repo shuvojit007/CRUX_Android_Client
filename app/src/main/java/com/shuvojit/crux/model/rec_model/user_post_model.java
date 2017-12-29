@@ -1,5 +1,8 @@
 package com.shuvojit.crux.model.rec_model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +12,7 @@ import java.util.List;
  * Created by SHOBOJIT on 12/29/2017.
  */
 
-public class user_post_model {
+public class user_post_model implements Parcelable {
 
     @SerializedName("_id")
     @Expose
@@ -100,5 +103,48 @@ public class user_post_model {
         this.comments = comments;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.description);
+        dest.writeString(this.image);
+        dest.writeString(this.user);
+        dest.writeValue(this.v);
+        dest.writeString(this.date);
+        dest.writeStringList(this.comments);
+    }
+
+    public user_post_model() {
+    }
+
+    protected user_post_model(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.description = in.readString();
+        this.image = in.readString();
+        this.user = in.readString();
+        this.v = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.date = in.readString();
+        this.comments = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<user_post_model> CREATOR = new Parcelable.Creator<user_post_model>() {
+        @Override
+        public user_post_model createFromParcel(Parcel source) {
+            return new user_post_model(source);
+        }
+
+        @Override
+        public user_post_model[] newArray(int size) {
+            return new user_post_model[size];
+        }
+    };
 }
 
