@@ -11,10 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +31,8 @@ import com.google.firebase.storage.UploadTask;
 import com.shuvojit.crux.R;
 import com.shuvojit.crux.model.Update_Image_model;
 import com.shuvojit.crux.model.user_profile_model_1;
-import com.shuvojit.crux.service.Authentication;
+import com.shuvojit.crux.service.Api;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +58,7 @@ public class Profile_Frag extends Fragment {
     SharedPreferences sp;
     String token;
     ProgressDialog mDialog;
+    String id;
     Button pro_btn_upPic;
     CircleImageView propic;
     TextView proname, propost, procmnts, proemail, prophn;
@@ -118,12 +115,13 @@ public class Profile_Frag extends Fragment {
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        Authentication authservice = retrofit.create(Authentication.class);
+        Api authservice = retrofit.create(Api.class);
         Call<user_profile_model_1> call = authservice.GetUserData();
         call.enqueue(new Callback<user_profile_model_1>() {
             @Override
             public void onResponse(Call<user_profile_model_1> call, retrofit2.Response<user_profile_model_1> response) {
                 if (response.isSuccessful()) {
+                    id=response.body().getId();
                     mDialog.dismiss();
                     if (response.body().getMethod().equals("local")) {
                         Setup(response.body().getFirstName(),
@@ -249,7 +247,7 @@ public class Profile_Frag extends Fragment {
         });
 
 
-        StorageReference Ref = mStorageRef.child("propic/" + displayName);
+        StorageReference Ref = mStorageRef.child("propic/" + id);
         mStorageTask =Ref.putFile(res).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -297,7 +295,7 @@ public class Profile_Frag extends Fragment {
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        Authentication authservice = retrofit.create(Authentication.class);
+        Api authservice = retrofit.create(Api.class);
         Call<Update_Image_model> call = authservice.UpdateImage(new Update_Image_model(downloadUrl.toString()));
         call.enqueue(new Callback<Update_Image_model>() {
             @Override

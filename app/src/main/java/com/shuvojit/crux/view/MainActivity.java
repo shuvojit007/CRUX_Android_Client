@@ -3,6 +3,8 @@ package com.shuvojit.crux.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         tl = findViewById(R.id.main_appBar);
         setSupportActionBar(tl);
         getSupportActionBar().setTitle("CRUX");
+        tl.setTitleTextColor(0xFFFFFFFF);
         mbottomNavigationView = (BottomNavigationView) findViewById(R.id.main_bottom_bar);
         viewPager = findViewById(R.id.main_fragment_container);
         viewPager.setOffscreenPageLimit(3);

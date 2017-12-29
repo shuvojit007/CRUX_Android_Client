@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.shuvojit.crux.R;
 import com.shuvojit.crux.model.login_model;
-import com.shuvojit.crux.service.Authentication;
+import com.shuvojit.crux.service.Api;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +52,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void GetTokenFromServer(String email, String password) {
-        Authentication service = Authentication.retrofit.create(Authentication .class);
+        Api service = Api.retrofit.create(Api.class);
         Call<login_model> call = service.lgoin_user(new login_model(email, password));
         call.enqueue(new Callback<login_model>() {
             @Override

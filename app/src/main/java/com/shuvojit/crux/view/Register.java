@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.shuvojit.crux.R;
 import com.shuvojit.crux.model.register_model;
-import com.shuvojit.crux.service.Authentication;
+import com.shuvojit.crux.service.Api;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,7 +51,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void registerAccount(String firstname, String lastname, String email, String password,String phn) {
-        Authentication service= Authentication.retrofit.create(Authentication.class);
+        Api service= Api.retrofit.create(Api.class);
         Call<register_model> call =service.register_user(new register_model(email,password,firstname,lastname,phn));
         call.enqueue(new Callback<register_model>() {
             @Override
