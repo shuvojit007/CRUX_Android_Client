@@ -1,9 +1,10 @@
 package com.shuvojit.crux.service;
 
 import com.shuvojit.crux.model.Update_Image_model;
+import com.shuvojit.crux.model.addPost_model;
 import com.shuvojit.crux.model.login_model;
 import com.shuvojit.crux.model.rec_model.user_post_model;
-import com.shuvojit.crux.model.rec_model.user_post_model_list;
+
 import com.shuvojit.crux.model.register_model;
 import com.shuvojit.crux.model.user_profile_model_1;
 
@@ -24,20 +25,23 @@ import retrofit2.http.PUT;
 
 public interface Api {
 
+    //Authentication
     @POST("signin")
     Call<login_model> lgoin_user(@Body login_model model);
-
     @POST("signup")
     Call<register_model> register_user(@Body register_model model);
 
+    //User Details
     @GET("user")
     Call<user_profile_model_1> GetUserData();
-
     @PUT("user")
     Call<Update_Image_model> UpdateImage(@Body Update_Image_model model);
-
     @GET("userpost")
     Call<List<user_post_model>> GetUserPost();
+
+    //Post Detail
+    @POST("posts")
+    Call<addPost_model> PostToServer(@Body addPost_model model);
 
 
     String url = "https://young-peak-53218.herokuapp.com/user/";
