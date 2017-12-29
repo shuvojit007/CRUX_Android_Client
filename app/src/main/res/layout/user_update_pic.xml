@@ -1,80 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/dialog_croner"
     android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Your File is Uploading..."
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/pro_upimg_dlg_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="FileName.Type"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
+
+    <ProgressBar
+        android:id="@+id/pro_upimg_dlg_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/progress_bar"
+        android:progress="40"
+        android:progressDrawable="@drawable/progress_bar" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="#f1ffffff"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <TextView
-            android:layout_width="match_parent"
-            android:text="Your File is Uploading..."
-            android:gravity="center"
-            android:textSize="18sp"
-            android:padding="10dp"
-            android:layout_height="wrap_content" />
+            android:id="@+id/pro_upimag_dlg_size"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="0" />
+
         <TextView
-            android:layout_width="match_parent"
-            android:text="FileName.Type"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:id="@+id/pro_upimg_dlg_name"
-            android:padding="10dp"
-            android:textColor="@color/colorPrimary"
-            android:layout_height="wrap_content" />
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:progress="40"
-            android:id="@+id/pro_upimg_dlg_progress"
-            android:background="@drawable/progress_bar"
-            android:progressDrawable="@drawable/progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="0dp"
-                android:gravity="left"
-                android:text="0"
-                android:id="@+id/pro_upimag_dlg_size"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="0dp"
-                android:text="0"
-                android:id="@+id/pro_upimag_dlg_size_percent"
-                android:gravity="end"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <Button
-            android:layout_margin="5dp"
-            android:layout_width="match_parent"
+            android:id="@+id/pro_upimag_dlg_size_percent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/img_up_pause"
-            android:id="@+id/pro_upimag_dlg_btn_pause"
-            android:textColor="@color/colorPrimary"
-            android:text="Pause Upload" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/img_up_cancel"
-            android:textColor="@color/colorAccent"
-            android:id="@+id/pro_upimag_dlg_btn_cancel"
-            android:text="Cancel Upload" />
-
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="0" />
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <Button
+        android:id="@+id/pro_upimag_dlg_btn_pause"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/img_up_pause"
+        android:text="Pause Upload"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/pro_upimag_dlg_btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/img_up_cancel"
+        android:text="Cancel Upload"
+        android:textColor="@color/colorAccent" />
+
+</LinearLayout>

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -29,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.shuvojit.crux.R;
+import com.shuvojit.crux.model.Update_Image_model;
 import com.shuvojit.crux.model.user_profile_model_1;
 import com.shuvojit.crux.service.Authentication;
 import com.squareup.picasso.Picasso;
@@ -81,20 +84,7 @@ public class Profile_Frag extends Fragment {
             Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
 
-        pro_btn_upPic.setOnClickListener((View) -> {
-
-//            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-//            final View dialogView = getActivity()
-//                    .getLayoutInflater()
-//                    .inflate(R.layout.user_update_pic,null);
-//            builder.setView(dialogView);
-//            final AlertDialog dialog = builder.create();
-//            dialog.setCanceledOnTouchOutside(false);
-//
-//            dialog.show();
-
-            uploadImage();
-        });
+        pro_btn_upPic.setOnClickListener((View) -> uploadImage());
         return v;
     }
 
@@ -181,17 +171,6 @@ public class Profile_Frag extends Fragment {
     }
 
     private void uploadImage() {
-//        Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        //   Intent gallaryIntent = new Intent().setType("image*//**//*").setAction(Intent.ACTION_GET_CONTENT);
-//        //  startActivityForResult(Intent.createChooser(galleryIntent,"SELECT IMAGE"),GALLERY_PICK);
-//        startActivityForResult(galleryIntent,1);
-
-//        CropImage.activity()
-//                .setAspectRatio(1, 1)
-//                .setGuidelines(CropImageView.Guidelines.ON)
-//                .setMinCropWindowSize(500, 500)
-//                .start(getContext(), this);
-
         Intent in = new Intent(Intent.ACTION_GET_CONTENT);
         in.setType("*/*");
         in.addCategory(Intent.CATEGORY_OPENABLE);
@@ -205,26 +184,6 @@ public class Profile_Frag extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//
-//        if(requestCode==1){
-//            UpToFirebas(data.getData());
-//        }
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if (resultCode == RESULT_OK) {
-//                //upload the file to storage
-//                //get the Uri of selected Image
-//                Uri resultUri = result.getUri();
-//                Log.e("Image uri", resultUri.toString());
-//                Toast.makeText(getContext(), "data", Toast.LENGTH_SHORT).show();
-//
-//                UpToFirebas(resultUri);
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
-//
-//            }
-//        }
-
         if (requestCode == 1 && resultCode == RESULT_OK) {
             UpToFirebas(data.getData());
         }
@@ -270,6 +229,7 @@ public class Profile_Frag extends Fragment {
         final ProgressBar progressBar = dialogView.findViewById(R.id.pro_upimg_dlg_progress);
         fileName.setText(displayName);
         dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
         pause.setOnClickListener((View)->{
@@ -296,6 +256,7 @@ public class Profile_Frag extends Fragment {
                 dialog.dismiss();
                 // Get a URL to the uploaded content
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                AddImageToTheServer(downloadUrl);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -310,6 +271,49 @@ public class Profile_Frag extends Fragment {
                 progressBar.setProgress((int) progress);
                 fileSize.setText( taskSnapshot.getBytesTransferred()/(1024*1024)+"/"+ taskSnapshot.getTotalByteCount()/(1024*1024)+"mb");
                 fileSizePercent.setText(String.valueOf((int)progress)+"%");
+            }
+        });
+    }
+
+    private void AddImageToTheServer(Uri downloadUrl) {
+        mDialog.setTitle("Fetching User Data");
+        mDialog.setMessage("Please wait while we upadate your data to server");
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //Ok Http intercepter
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request req = chain.request();
+                Request.Builder newreq = req.newBuilder().header("auth", token);
+                return chain.proceed(newreq.build());
+            }
+        });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Authentication authservice = retrofit.create(Authentication.class);
+        Call<Update_Image_model> call = authservice.UpdateImage(new Update_Image_model(downloadUrl.toString()));
+        call.enqueue(new Callback<Update_Image_model>() {
+            @Override
+            public void onResponse(Call<Update_Image_model> call, retrofit2.Response<Update_Image_model> response) {
+                mDialog.dismiss();
+                if(response.isSuccessful()){
+                    if(response.code()==200){
+                        Picasso.with(getContext()).load(downloadUrl.toString()).placeholder(R.drawable.ph2).into(propic);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Update_Image_model> call, Throwable t) {
+                mDialog.dismiss();
+                Toast.makeText(getContext(), "Update Your Profile Pic", Toast.LENGTH_SHORT).show();
             }
         });
     }
