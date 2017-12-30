@@ -4,6 +4,8 @@ import com.shuvojit.crux.model.Update_Image_model;
 import com.shuvojit.crux.model.addPost_model;
 import com.shuvojit.crux.model.login_model;
 import com.shuvojit.crux.model.rec_model.All_User_Post_Model;
+import com.shuvojit.crux.model.rec_model.Post_Comment_model.Add_Comment_model;
+import com.shuvojit.crux.model.rec_model.Post_Comment_model.Post_Comment_model;
 import com.shuvojit.crux.model.rec_model.Update_post_model;
 import com.shuvojit.crux.model.rec_model.user_post_model;
 
@@ -59,6 +61,13 @@ public interface Api {
 
     @GET("posts")
     Call<List<All_User_Post_Model>> GETAllUserPost();
+
+    //--------------Comments--------------
+    @GET("comment/{postId}")
+    Call<List<Post_Comment_model>> GetUserComment(@Path("postId") String postId);
+
+    @POST("comment/{postId}")
+    Call<Add_Comment_model> Add_Comment(@Path("postId") String postId, @Body Add_Comment_model model);
 
 
     String url = "https://young-peak-53218.herokuapp.com/user/";

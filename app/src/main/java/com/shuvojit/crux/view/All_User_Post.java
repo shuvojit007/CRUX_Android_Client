@@ -1,5 +1,6 @@
 package com.shuvojit.crux.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -32,6 +33,9 @@ public class All_User_Post extends AppCompatActivity {
                 model.getUser().getFirstName()+" "+model.getUser().getLastName(),
                 model.getDescription(),
                 model.getImage());
+        cmnt.setOnClickListener(v->{
+            startActivity(new Intent(this,User_Comment_List.class).putExtra("id",model.getId()));
+        });
     }
 
     private void SetUp(String titlestr, String datestr, String namestr, String descriptionstr, String image) {
