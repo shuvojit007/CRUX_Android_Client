@@ -26,7 +26,8 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".view.User_Post_Details_activity"></activity>
+        <activity android:name=".view.User_Post_Details_activity" />
+        <activity android:name=".view.All_User_Post"></activity>
     </application>
 
 </manifest>

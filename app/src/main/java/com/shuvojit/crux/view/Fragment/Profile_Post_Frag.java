@@ -76,7 +76,6 @@ public class Profile_Post_Frag extends Fragment {
     View v;
     private RecyclerView recyclerView;
     SharedPreferences sp;
-
     String token;
     private StorageReference mImageStorageReference;
     private static Uri resultUri;
@@ -289,9 +288,9 @@ public class Profile_Post_Frag extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
         recyclerView.addItemDecoration(new ItemDecoration(20,10,20,0));
-        adapter= new RecyclerAdapter(list);
-        recyclerView.setAdapter(adapter);
-        mAddPost = v.findViewById(R.id.user_add_post);
+//        adapter= new RecyclerAdapter(list);
+//        recyclerView.setAdapter(adapter);
+     mAddPost = v.findViewById(R.id.user_add_post);
     }
 
 

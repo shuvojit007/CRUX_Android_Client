@@ -3,6 +3,8 @@ package com.shuvojit.crux.service;
 import com.shuvojit.crux.model.Update_Image_model;
 import com.shuvojit.crux.model.addPost_model;
 import com.shuvojit.crux.model.login_model;
+import com.shuvojit.crux.model.rec_model.All_User_Post_Model;
+import com.shuvojit.crux.model.rec_model.Update_post_model;
 import com.shuvojit.crux.model.rec_model.user_post_model;
 
 import com.shuvojit.crux.model.register_model;
@@ -28,14 +30,14 @@ import retrofit2.http.Path;
 
 public interface Api {
 
-    //Authentication
+    //-------------------Authentication---------------------
     @POST("signin")
     Call<login_model> lgoin_user(@Body login_model model);
 
     @POST("signup")
     Call<register_model> register_user(@Body register_model model);
 
-    //User Details
+    //-------------------User Details----------------------
     @GET("user")
     Call<user_profile_model_1> GetUserData();
 
@@ -45,12 +47,18 @@ public interface Api {
     @GET("userpost")
     Call<List<user_post_model>> GetUserPost();
 
-    //Post Detail
+    //---------------Post Detail--------------
     @POST("posts")
     Call<addPost_model> PostToServer(@Body addPost_model model);
 
     @DELETE("posts/{postId}")
-    Call <Void>deleteUser(@Path("postId")String postId);
+    Call<Void> deleteUser(@Path("postId") String postId);
+
+    @PUT("posts/{postId}")
+    Call<Update_post_model> UpdatePost(@Path("postId") String postId, @Body Update_post_model model);
+
+    @GET("posts")
+    Call<List<All_User_Post_Model>> GETAllUserPost();
 
 
     String url = "https://young-peak-53218.herokuapp.com/user/";

@@ -10,7 +10,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:background="#b4ffffff"
         android:orientation="vertical">
 
@@ -19,13 +22,13 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/user_post_details_img"
+                android:id="@+id/all_user_post_details_img"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/user_post_details_title"
+                android:id="@+id/all_user_post_details_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
@@ -48,24 +51,59 @@
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="20dp"
             app:cardElevation="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/all_user_post_details_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="match_parent"
+                    android:textSize="18sp"
+                    android:text=""
+                    android:padding="2dp"
+                    android:textColor="#FFF" />
+                <TextView
+                    android:id="@+id/all_user_post_details_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="18sp"
+                    android:text=""
+                    android:padding="2dp"
+                    android:textColor="#FFF" />
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp">
 
             <TextView
-                android:id="@+id/user_post_details_des"
+                android:id="@+id/all_user_post_details_des"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:textColor="#FFF" />
         </android.support.v7.widget.CardView>
-   <android.support.v4.widget.Space
-       android:layout_width="match_parent"
-       android:layout_height="10dp" />
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:text="Update"
-            android:id="@+id/user_post_details_update_btn"
+            android:text="Show Comment"
+            android:id="@+id/all_user_post_details_show_cmnt_btn"
             android:background="@drawable/img_up_pause"
             android:layout_height="wrap_content" />
+
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />

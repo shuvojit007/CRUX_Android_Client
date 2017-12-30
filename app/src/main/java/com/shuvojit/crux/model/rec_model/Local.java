@@ -1,4 +1,5 @@
-package com.shuvojit.crux.model;
+package com.shuvojit.crux.model.rec_model;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -6,16 +7,35 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by SHOBOJIT on 12/27/2017.
+ * Created by SHOBOJIT on 12/30/2017.
  */
 
+
 public class Local implements Parcelable {
+
     @SerializedName("email")
     @Expose
     private String email;
     @SerializedName("password")
     @Expose
     private String password;
+
+    protected Local(Parcel in) {
+        email = in.readString();
+        password = in.readString();
+    }
+
+    public static final Creator<Local> CREATOR = new Creator<Local>() {
+        @Override
+        public Local createFromParcel(Parcel in) {
+            return new Local(in);
+        }
+
+        @Override
+        public Local[] newArray(int size) {
+            return new Local[size];
+        }
+    };
 
     public String getEmail() {
         return email;
@@ -33,35 +53,14 @@ public class Local implements Parcelable {
         this.password = password;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.email);
-        dest.writeString(this.password);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(email);
+        parcel.writeString(password);
     }
-
-    public Local() {
-    }
-
-    protected Local(Parcel in) {
-        this.email = in.readString();
-        this.password = in.readString();
-    }
-
-    public static final Parcelable.Creator<Local> CREATOR = new Parcelable.Creator<Local>() {
-        @Override
-        public Local createFromParcel(Parcel source) {
-            return new Local(source);
-        }
-
-        @Override
-        public Local[] newArray(int size) {
-            return new Local[size];
-        }
-    };
 }
