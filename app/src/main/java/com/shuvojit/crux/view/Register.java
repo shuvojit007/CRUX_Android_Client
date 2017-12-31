@@ -7,6 +7,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Toast;
 
 import com.shuvojit.crux.R;
@@ -21,6 +23,7 @@ public class Register extends AppCompatActivity {
     Toolbar tl;
     SharedPreferences sp;
     private static String token = "TOKEN";
+    private int lastLengthOfemail = 0;
     TextInputLayout mFirstName,mLastName,mEmail,mPassword,mPhn;
     ProgressDialog mDialog;
     @Override
@@ -31,6 +34,22 @@ public class Register extends AppCompatActivity {
         setSupportActionBar(tl);
         setSupportActionBar(tl);
         getSupportActionBar().setTitle("Sign Up");
+        mEmail.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                autoCompliteEmailForm();
+            }
+        });
 
         findViewById(R.id.reg_create_btn).setOnClickListener((View)->{
             String email = mEmail.getEditText().getText().toString();
@@ -83,5 +102,30 @@ public class Register extends AppCompatActivity {
         mPhn = findViewById(R.id.reg_phn);
         mDialog =new ProgressDialog(this);
         sp = getSharedPreferences(token, MODE_PRIVATE);
+    }
+
+
+    private void autoCompliteEmailForm() {
+        String text =    mEmail.getEditText().getText().toString();
+        int length = text.length();
+        if (lastLengthOfemail < length) {
+            if (length > 1) {
+                text = text.substring(length - 2);
+                text = text.toLowerCase();
+                char[] lastChars = text.toCharArray();
+                if (lastChars[0] == '@') {
+                    if (lastChars[1] == 'g') {
+                        mEmail.getEditText().append("mail.com");
+                    } else if (lastChars[1] == 'h') {
+                        mEmail.getEditText().append("otmail.com");
+                    } else if (lastChars[1] == 'l') {
+                        mEmail.getEditText().append("ive.com");
+                    } else if (lastChars[1] == 'y') {
+                        mEmail.getEditText().append("ahoo.com");
+                    }
+                }
+            }
+        }
+        lastLengthOfemail = length;
     }
 }
